@@ -36,5 +36,12 @@ const movies = [
     date: "2026-07-29", 
     rating: 8.4, 
     poster: "/mt6uZzy7DAsncHlGGzMsyNgLR6v.jpg" 
+  },
+  { 
+    title: "극장판 치이카와: 인어 섬의 비밀", 
+    year: 2026, 
+    date: "2026-09-30", 
+    rating: 7.4, 
+    poster: "/5TMyytCI5Pfc9c1eNsljiCdiB05.jpg" 
   }
 ];

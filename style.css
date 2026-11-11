@@ -201,3 +201,5 @@ body.detail-page {
         grid-template-columns: 1fr 2fr;
     }
 }
+.card.hot .badge { background: crimson; color: #fff; }
+.toolbar { display: flex; align-items: center; gap: 12px; color: #fff; }

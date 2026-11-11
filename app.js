@@ -3,37 +3,37 @@
 
 
 function average(list) {
-  let sum = 0;
-  for (const m of list) {
-    sum += m.rating;
-  }
-  return sum / list.length;
+    let sum = 0;
+    for (const m of list) {
+        sum += m.rating;
+    }
+    return sum / list.length;
 }
 
 function best(list) {
-  let top = list[0];
-  for (const m of list) {
-    if (m.rating > top.rating) {
-      top = m;
+    let top = list[0];
+    for (const m of list) {
+        if (m.rating > top.rating) {
+            top = m;
+        }
     }
-  }
-  return top;
+    return top;
 }
 
 function filterByRating(list, min) {
-  return list.filter(m => m.rating >= min);
+    return list.filter(m => m.rating >= min);
 }
 
 function sortByRating(list) {
-  return [...list].sort((a, b) => b.rating - a.rating);
+    return [...list].sort((a, b) => b.rating - a.rating);
 }
 
 function yearsSince(dateStr) {
-  return new Date().getFullYear() - new Date(dateStr).getFullYear();
+    return new Date().getFullYear() - new Date(dateStr).getFullYear();
 }
 
 function posterUrl(path, size) {
-  return `https://image.tmdb.org/t/p/${size}${path}`;
+    return `https://image.tmdb.org/t/p/${size}${path}`;
 }
 
 console.log("평균:", average(movies));
@@ -46,6 +46,38 @@ console.log("정렬 1위:", sorted[0].title, "/ 원본 1번:", movies[0].title);
 console.log(yearsSince(movies[0].date) + "년 전 개봉");
 console.log(posterUrl(movies[0].poster, "w342"));
 
-document.title = "내 영화 " + movies.length + "편";
-console.table(sortByRating(movies));
-document.getElementById("out").textContent = "평균 " + average(movies).toFixed(1) + "점, 최고 " + best(movies).title;
+// renderCards : 영화 배열 ⇒ 보드에 카드 생성(반환값 없음)
+function renderCards(list) {
+    const board = document.querySelector(".board");
+    board.innerHTML = "";
+    for (const m of list) {
+        const card = document.createElement("article");
+        card.className = "card";
+        if (m.rating >= 8) { card.classList.add("hot"); }
+        card.innerHTML = `
+ <img class="poster" src="${posterUrl(m.poster, "w342")}" alt="${m.title} 포스터">
+ <span class="badge">${m.rating}</span>
+ <div class="info">
+ <h2>${m.title}</h2>
+ <p class="year">${m.year}</p>
+ </div>`;
+        board.appendChild(card);
+
+        document.getElementById("count").textContent = list.length + "편"
+    }
+}
+function sortBy(list, key, desc) {
+    const copy = [...list];
+    copy.sort((a, b) => {
+        if (typeof a[key] === "string") return a[key].localeCompare(b[key]);
+        return a[key] - b[key];
+    });
+    if (desc) copy.reverse();
+    return copy;
+}
+// applySort : 선택 상자 값으로 정렬해서 다시 그리기(반환값 없음)
+function applySort() {
+    const key = document.getElementById("sort").value;
+    renderCards(sortBy(movies, key, key !== "title"));
+}
+applySort();
